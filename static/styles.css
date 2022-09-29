@@ -1,0 +1,13 @@
+html,
+body {
+    margin: 0;
+}
+
+body {
+    padding: 1em;
+    background: blanchedalmond;
+}
+
+.wrapper {
+    text-align: center;
+}

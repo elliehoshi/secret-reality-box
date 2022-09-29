@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <head>
-  <style>
-    html,
-    body {
-      margin: 0;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>The Time Machine</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="root"></div>
-  <button onclick="btnClicked()">Hello!</button>
+  <div class="wrapper">
+    <div id="root"></div>
+    <button onclick="btnClicked()">Hello!</button>
+  </div>
   <script>
     const socket = new WebSocket('ws://localhost:21489/ws');
 
