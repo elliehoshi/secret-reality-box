@@ -4,12 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>The Time Machine</title>
+  <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body onload="startTime()">
   <div class="wrapper">
+    <div id="clock"></div>
     <div id="root"></div>
-    <button onclick="btnClicked()">Hello!</button>
+    <button class="button-cta" role="button" onclick="btnClicked()">Hello!</button>
   </div>
   <script>
     const socket = new WebSocket('ws://localhost:21489/ws');
@@ -40,6 +42,22 @@
 
     function btnClicked() {
       socket.send('Hello!');
+    }
+    // clock
+    function startTime() {
+      const today = new Date();
+      let h = today.getHours();
+      let m = today.getMinutes();
+      let s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+      setTimeout(startTime, 1000);
+    }
+
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
     }
   </script>
 </body>
