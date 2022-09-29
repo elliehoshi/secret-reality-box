@@ -4,12 +4,16 @@ body {
 }
 
 body {
+    height: 100vh;
     padding: 1em;
     background: blanchedalmond;
 }
 
-.wrapper {
+.container {
     text-align: center;
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
 }
 
 /*BUTTON*/
