@@ -125,7 +125,7 @@ class DataEndpoint(WebSocketEndpoint):
         )
         await websocket.close()
 
-    async def on_receive(self, websocket: WebSocket, data: str, sound_alarm: False) -> None:
+    async def on_receive(self, websocket: WebSocket, data: str, sound_alarm=False) -> None:
         logger.info("Socket: %s, Message: %s", websocket, data, sound_alarm)
         if data is not None:
             t2s = gTTS(data, lang ='en')
