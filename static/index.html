@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>The Time Machine</title>
+  <title>Cuckoo</title>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
   <script type="text/javascript" src="js/clock.js"></script>
@@ -56,16 +56,15 @@
 
     function btnClicked() {
       const today = new Date();
-      let h = today.getHours();
-      let m = today.getMinutes();
-      socket.send(h, m);
+      const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      socket.send(currentTime);
       // socket.send('Hello!');
     }
 
     // alarm
     function alarmBtnClick() {
       console.log('alarm button clicked');
-      // socket.send('Hello!');
+      socket.send('Select alarm time');
     }
 
     // clock
