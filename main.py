@@ -8,6 +8,9 @@ from typing import List
 # in order to control the crickit
 from adafruit_crickit import crickit
 
+# Drive NeoPixels on the NeoPixels Block on Crickit FeatherWing
+from adafruit_seesaw.neopixel import NeoPixel
+
 import picamera
 from starlette.websockets import WebSocket
 from uvicorn import Config, Server
@@ -79,6 +82,37 @@ async def motor_wait():
         crickit.servo_1.angle = 0     # right
 # end servo code
 
+
+# nanoring NeoPixel code
+num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
+
+# The following line sets up a NeoPixel strip on Seesaw pin 20 for Feather
+pixels = NeoPixel(crickit.seesaw, 20, num_pixels)
+
+def wheel(pos):
+    # Input a value 0 to 255 to get a color value.
+    # The colours are a transition r - g - b - back to r.
+    if pos < 0 or pos > 255:
+        return (0, 0, 0)
+    if pos < 85:
+        return (255 - pos * 3, pos * 3, 0)
+    if pos < 170:
+        pos -= 85
+        return (0, 255 - pos * 3, pos * 3)
+    pos -= 170
+    return (pos * 3, 0, 255 - pos * 3)
+
+async def neopixel_rainbow():
+    while True:
+        print("neopixel rainbow")
+        for j in range(255):
+                for i in range(num_pixels):
+                    rc_index = (i * 256 // num_pixels) + j
+                    pixels[i] = wheel(rc_index & 255)
+                pixels.show()
+                await asyncio.sleep(1)
+# end nanoring NeoPixel code
+
 class DataEndpoint(WebSocketEndpoint):
     async def on_connect(self, websocket: WebSocket) -> None:
         await websocket.accept()
@@ -123,7 +157,8 @@ async def event_loop():
     await asyncio.gather(
         asyncio.create_task(server.serve()),
         asyncio.create_task(poll_camera()),
-        asyncio.create_task(motor_wait())
+        asyncio.create_task(motor_wait()),
+        asyncio.create_task(neopixel_rainbow())
     )
 
 def main():
