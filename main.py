@@ -68,20 +68,23 @@ async def poll_camera():
         await asyncio.sleep(1)
 
 # servo code
-def motor_for():
-    #in this for loop, the motor steps by 30 degrees
-    #five times.
-    #range(x,y,z) specifies the bounds on the for loop,
-    #with x being the initial value, y being the final value
-    #not to be exceeded, and z being the increment.
+def motor_wait():
+#this function moves the servo to original angle, 0
+#and increments its position by two 90 degree steps
+#before rotating back to 0 degrees.
+#crickit.servo_1.angle sets the angle of your stepper motor
+#time.sleep() asks the processor to wait before executing
 
-    print("For Loop Engaged!: motor_for()")
-
-    motor_angle = 1
-
-    for x in range (0, 181, 30):
-        crickit.servo_1.angle = x
-        time.sleep(0.5)
+    print("Moving servo #1: motor_wait()")
+    crickit.servo_1.angle = 0      # right
+    time.sleep(1)
+    crickit.servo_1.angle = 90     # middle
+    time.sleep(1)
+    crickit.servo_1.angle = 180    # left
+    time.sleep(1)
+    crickit.servo_1.angle = 90     # middle
+    time.sleep(1)
+    crickit.servo_1.angle = 0     # right
 # end servo code
 
 class DataEndpoint(WebSocketEndpoint):
@@ -132,7 +135,7 @@ async def event_loop():
 
 def main():
     crickit.servo_1.angle = 0                  #set motor to angle '0'
-    motor_for()
+    motor_wait()
 
     try:
         asyncio.run(event_loop())
