@@ -145,3 +145,13 @@ input[type=time]::-webkit-clear-button {
 input[type=time]::-webkit-inner-spin-button {
     display: none;
 }
+
+/* Set Alarm button */
+input[type=submit] {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}

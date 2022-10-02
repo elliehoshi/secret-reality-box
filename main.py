@@ -19,7 +19,7 @@ from google.cloud import vision
 import pygame 
 from gtts import gTTS
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=""
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
 
 LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)

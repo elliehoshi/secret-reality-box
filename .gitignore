@@ -633,6 +633,7 @@ modules.xml
 # Generated files
 
 # Sensitive or high-churn files
+vision-voice-key.json
 
 # Gradle
 

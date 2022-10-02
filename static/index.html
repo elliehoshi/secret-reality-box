@@ -12,14 +12,18 @@
   <div class="container">
     <div id="clock"></div>
     <div id="root"></div>
-    <button class="button-cta" role="button" onclick="btnClicked()">Say Hello!</button>
-    <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set Alarm</button>
+    <button class="button-cta" role="button" onclick="btnClicked()">Say Current Time</button>
+    <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set New Alarm</button>
 
     <div class="alarm-set-wrapper">
       <form>
-        <label for="alarm">Set alarm</label>
+        <label for="alarm">Alarm Time</label>
 
         <input type="time" id="alarm" name="alarm" required>
+
+        <div>
+          <input type="submit" value="Set alarm" />
+        </div>
       </form>
     </div>
   </div>
