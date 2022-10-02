@@ -10,20 +10,20 @@
 </head>
 <body onload="startTime()">
   <div class="container">
+    <div id="current-alarm"></div>
     <div id="clock-wrapper" class="wrapper show">
-      <div id="current-alarm"></div>
       <div id="clock"></div>
     </div>
 
 
     <div id="alarm-set-wrapper" class="wrapper">
-      <form method="post" name="alarm1">
+      <form action="#" name="alarm1" onsubmit="setAlarm(); return false">
         <label for="alarm">Alarm Time</label>
 
         <input type="time" id="alarm" name="alarm">
 
         <div>
-          <input type="submit" name="submit" value="Set alarm" onclick="setAlarm()" />
+          <input type="submit" name="submit" value="Set alarm" />
         </div>
       </form>
     </div>
@@ -40,6 +40,8 @@
     const socket = new WebSocket('ws://localhost:21489/ws');
 
     const root = document.getElementById('root');
+    let alarmTime = null;
+
     socket.onopen = () => {
       console.log('[open] Connection established');
       console.log('Sending to server');
@@ -105,12 +107,14 @@
 
     // set alarm
     function setAlarm() {
-      const alarmTime = document.getElementById("alarm").value;
+      alarmTime = document.getElementById("alarm").value || null;
       const currentAlarm = document.getElementById("current-alarm");
-      alert(alarmTime);
       console.log("alarmTime ", alarmTime);
+      socket.send(alarmTime);
       currentAlarm.innerHTML = alarmTime;
+      alert(alarmTime);
       toggleView(false);
+      return alarmTime;
     }
 
     // clock
