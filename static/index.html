@@ -10,13 +10,9 @@
 </head>
 <body onload="startTime()">
   <div class="container">
-    <div id="clock"></div>
+    <div id="clock" class="wrapper show"></div>
 
-    <button class="button-cta" role="button" onclick="btnClicked()">Say Current Time</button>
-    <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set New Alarm</button>
-    <button class="button-cta" role="button" onclick="btnTestAlarm()">Test Alarm</button>
-
-    <div class="alarm-set-wrapper">
+    <div id="alarm-set-wrapper" class="wrapper">
       <form>
         <label for="alarm">Alarm Time</label>
 
@@ -27,8 +23,15 @@
         </div>
       </form>
     </div>
+
+    <div class="button-row">
+      <button class="button-cta" role="button" onclick="btnCurrentTime()">Current Time</button>
+      <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set New Alarm</button>
+      <button class="button-cta button-test" role="button" onclick="btnTestAlarm()">!</button>
+    </div>
     <div id="root"></div>
   </div>
+
   <script>
     const socket = new WebSocket('ws://localhost:21489/ws');
 
@@ -56,22 +59,44 @@
       console.error(`[error] ${event.toString()}`);
     };
 
+    // hide/display clock/alarm
+    function toggleView(showAlarm) {
+      const alarmWrapper = document.getElementById("alarm-set-wrapper");
+      const clockWrapper = document.getElementById("clock");
+      let alarmVisible = alarmWrapper.classList.contains("show");
+      let clockVisible = clockWrapper.classList.contains("show");
+
+      if ( alarmVisible && !showAlarm ) {
+        alarmWrapper.classList.remove("show");
+        clockWrapper.classList.add("show");
+      } else if ( clockVisible && showAlarm) {
+        clockWrapper.classList.remove("show");
+        alarmWrapper.classList.add("show");
+      } else {
+        console.log('alarmVisible: ', alarmVisible, 'clockVisible: ', clockVisible);
+      }
+    }
+
     // say current time
-    function btnClicked() {
+    function btnCurrentTime() {
       const today = new Date();
       const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      toggleView(false);
       socket.send(currentTime);
     }
 
     // test alarm
     function btnTestAlarm() {
-      socket.send('Cuckoo! Cuckoo! Cuckoo!');
+      socket.send('Cuckoo! Cuckoo! Cuckoo!', True);
+      // socket.send('Cuckoo! Cuckoo! Cuckoo!');
     }
 
     // alarm
     function alarmBtnClick() {
       console.log('alarm button clicked');
       socket.send('Select alarm time');
+
+      toggleView(true);
     }
 
     // clock

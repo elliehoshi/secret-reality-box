@@ -17,8 +17,39 @@ body {
     transform: perspective(1px) translateY(-50%);
 }
 
-.alarm-set-wrapper {
-    padding: 2em;
+.wrapper {
+    opacity: 0;
+    height: 0;
+    min-height: none;
+    width: 0;
+    padding: 0;
+}
+
+.wrapper.show {
+    opacity: 1;
+    height: auto;
+    width: auto;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+}
+
+/*CLOCK*/
+#clock {
+    align-items: center;
+    box-sizing: border-box;
+    color: darkmagenta;
+    display: inline-flex;
+    font-size: 10rem;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    position: relative;
+    text-decoration: none;
+}
+
+.button-row {
+    margin: 0 auto;
 }
 
 /*BUTTON*/
@@ -70,21 +101,8 @@ body {
     background-color: dodgerblue;
 }
 
-/*CLOCK*/
-#clock {
-    align-items: center;
-    box-sizing: border-box;
-    color: darkmagenta;
-    display: inline-flex;
-    font-size: 10rem;
-    font-weight: 600;
-    justify-content: center;
-    line-height: 1.25;
-    margin: 0;
-    min-height: 3rem;
-    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
-    position: relative;
-    text-decoration: none;
+.button-test {
+    background-color: fuchsia;
 }
 
 /*SET ALARM*/
