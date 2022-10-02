@@ -5,10 +5,7 @@ import asyncio
 import os
 from typing import List
 
-#These lines import the key libraries we need for this
-#script - in order to control the crickit and keep track
-#of time:
-import time
+# in order to control the crickit
 from adafruit_crickit import crickit
 
 import picamera
@@ -69,11 +66,6 @@ async def poll_camera():
 
 # servo code
 async def motor_wait():
-#this function moves the servo to original angle, 0
-#and increments its position by two 90 degree steps
-#before rotating back to 0 degrees.
-#crickit.servo_1.angle sets the angle of your stepper motor
-#time.sleep() asks the processor to wait before executing
     while True:
         print("Moving servo #1: motor_wait()")
         crickit.servo_1.angle = 0      # right
