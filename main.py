@@ -5,6 +5,12 @@ import asyncio
 import os
 from typing import List
 
+#These lines import the key libraries we need for this
+#script - in order to control the crickit and keep track
+#of time:
+import time
+from adafruit_crickit import crickit
+
 import picamera
 from starlette.websockets import WebSocket
 from uvicorn import Config, Server
@@ -61,6 +67,23 @@ async def poll_camera():
 
         await asyncio.sleep(1)
 
+# servo code
+def motor_for():
+    #in this for loop, the motor steps by 30 degrees
+    #five times.
+    #range(x,y,z) specifies the bounds on the for loop,
+    #with x being the initial value, y being the final value
+    #not to be exceeded, and z being the increment.
+
+    print("For Loop Engaged!: motor_for()")
+
+    motor_angle = 1
+
+    for x in range (0, 181, 30):
+        crickit.servo_1.angle = x
+        time.sleep(0.5)
+# end servo code
+
 class DataEndpoint(WebSocketEndpoint):
     async def on_connect(self, websocket: WebSocket) -> None:
         await websocket.accept()
@@ -108,10 +131,14 @@ async def event_loop():
     )
 
 def main():
+    crickit.servo_1.angle = 0                  #set motor to angle '0'
+    motor_for()
+
     try:
         asyncio.run(event_loop())
     except CancelledError as er:
         pass
 
+# the below 'if' statement helps python distinguish the main function.
 if __name__ == "__main__":
     main()

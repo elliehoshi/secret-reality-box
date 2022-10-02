@@ -58,7 +58,6 @@
       const today = new Date();
       const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
       socket.send(currentTime);
-      // socket.send('Hello!');
     }
 
     // alarm
