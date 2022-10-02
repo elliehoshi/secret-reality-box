@@ -68,23 +68,23 @@ async def poll_camera():
         await asyncio.sleep(1)
 
 # servo code
-def motor_wait():
+async def motor_wait():
 #this function moves the servo to original angle, 0
 #and increments its position by two 90 degree steps
 #before rotating back to 0 degrees.
 #crickit.servo_1.angle sets the angle of your stepper motor
 #time.sleep() asks the processor to wait before executing
-
-    print("Moving servo #1: motor_wait()")
-    crickit.servo_1.angle = 0      # right
-    time.sleep(1)
-    crickit.servo_1.angle = 90     # middle
-    time.sleep(1)
-    crickit.servo_1.angle = 180    # left
-    time.sleep(1)
-    crickit.servo_1.angle = 90     # middle
-    time.sleep(1)
-    crickit.servo_1.angle = 0     # right
+    while True:
+        print("Moving servo #1: motor_wait()")
+        crickit.servo_1.angle = 0      # right
+        await asyncio.sleep(1)
+        crickit.servo_1.angle = 90     # middle
+        await asyncio.sleep(1)
+        crickit.servo_1.angle = 180    # left
+        await asyncio.sleep(1)
+        crickit.servo_1.angle = 90     # middle
+        await asyncio.sleep(1)
+        crickit.servo_1.angle = 0     # right
 # end servo code
 
 class DataEndpoint(WebSocketEndpoint):
@@ -130,13 +130,11 @@ server = Server(
 async def event_loop():
     await asyncio.gather(
         asyncio.create_task(server.serve()),
-        asyncio.create_task(poll_camera())
+        asyncio.create_task(poll_camera()),
+        asyncio.create_task(motor_wait())
     )
 
 def main():
-    crickit.servo_1.angle = 0                  #set motor to angle '0'
-    motor_wait()
-
     try:
         asyncio.run(event_loop())
     except CancelledError as er:
