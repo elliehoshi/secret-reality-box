@@ -11,9 +11,10 @@
 <body onload="startTime()">
   <div class="container">
     <div id="clock"></div>
-    <div id="root"></div>
+
     <button class="button-cta" role="button" onclick="btnClicked()">Say Current Time</button>
     <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set New Alarm</button>
+    <button class="button-cta" role="button" onclick="btnTestAlarm()">Test Alarm</button>
 
     <div class="alarm-set-wrapper">
       <form>
@@ -26,6 +27,7 @@
         </div>
       </form>
     </div>
+    <div id="root"></div>
   </div>
   <script>
     const socket = new WebSocket('ws://localhost:21489/ws');
@@ -54,10 +56,16 @@
       console.error(`[error] ${event.toString()}`);
     };
 
+    // say current time
     function btnClicked() {
       const today = new Date();
       const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
       socket.send(currentTime);
+    }
+
+    // test alarm
+    function btnTestAlarm() {
+      socket.send('Cuckoo! Cuckoo! Cuckoo!');
     }
 
     // alarm

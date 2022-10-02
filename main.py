@@ -5,9 +5,8 @@ import asyncio
 import os
 from typing import List
 
-# in order to control the crickit
+# Crickit - Servo and NeoPixel
 from adafruit_crickit import crickit
-
 # Drive NeoPixels on the NeoPixels Block on Crickit FeatherWing
 from adafruit_seesaw.neopixel import NeoPixel
 
@@ -53,10 +52,10 @@ async def broadcast(*args, **kwargs):
 
 async def poll_camera():
     while True:
-        camera.start_preview() 
+#         camera.start_preview()
         await asyncio.sleep(.5)
         camera.capture('image.jpg')
-        camera.stop_preview()
+#         camera.stop_preview()
 
         with open('image.jpg', 'rb') as image_file:
             content = image_file.read()
@@ -126,8 +125,8 @@ class DataEndpoint(WebSocketEndpoint):
         )
         await websocket.close()
 
-    async def on_receive(self, websocket: WebSocket, data: str) -> None:
-        logger.info("Socket: %s, Message: %s", websocket, data)
+    async def on_receive(self, websocket: WebSocket, data: str, sound_alarm: False) -> None:
+        logger.info("Socket: %s, Message: %s", websocket, data, sound_alarm)
         if data is not None:
             t2s = gTTS(data, lang ='en')
             t2s.save('speech.mp3')
