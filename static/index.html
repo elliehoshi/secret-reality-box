@@ -10,16 +10,20 @@
 </head>
 <body onload="startTime()">
   <div class="container">
-    <div id="clock" class="wrapper show"></div>
+    <div id="clock-wrapper" class="wrapper show">
+      <div id="current-alarm"></div>
+      <div id="clock"></div>
+    </div>
+
 
     <div id="alarm-set-wrapper" class="wrapper">
-      <form>
+      <form method="post" name="alarm1">
         <label for="alarm">Alarm Time</label>
 
-        <input type="time" id="alarm" name="alarm" required>
+        <input type="time" id="alarm" name="alarm">
 
         <div>
-          <input type="submit" value="Set alarm" />
+          <input type="submit" name="submit" value="Set alarm" onclick="setAlarm()" />
         </div>
       </form>
     </div>
@@ -62,7 +66,7 @@
     // hide/display clock/alarm
     function toggleView(showAlarm) {
       const alarmWrapper = document.getElementById("alarm-set-wrapper");
-      const clockWrapper = document.getElementById("clock");
+      const clockWrapper = document.getElementById("clock-wrapper");
       let alarmVisible = alarmWrapper.classList.contains("show");
       let clockVisible = clockWrapper.classList.contains("show");
 
@@ -87,7 +91,7 @@
 
     // test alarm
     function btnTestAlarm() {
-      socket.send('Cuckoo! Cuckoo! Cuckoo!', True);
+      socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
       // socket.send('Cuckoo! Cuckoo! Cuckoo!');
     }
 
@@ -97,6 +101,16 @@
       socket.send('Select alarm time');
 
       toggleView(true);
+    }
+
+    // set alarm
+    function setAlarm() {
+      const alarmTime = document.getElementById("alarm").value;
+      const currentAlarm = document.getElementById("current-alarm");
+      alert(alarmTime);
+      console.log("alarmTime ", alarmTime);
+      currentAlarm.innerHTML = alarmTime;
+      toggleView(false);
     }
 
     // clock
