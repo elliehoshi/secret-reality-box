@@ -55,7 +55,11 @@
     };
 
     function btnClicked() {
-      socket.send('Hello!');
+      const today = new Date();
+      let h = today.getHours();
+      let m = today.getMinutes();
+      socket.send(h, m);
+      // socket.send('Hello!');
     }
 
     // alarm
