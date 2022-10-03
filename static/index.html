@@ -107,14 +107,39 @@
 
     // set alarm
     function setAlarm() {
-      alarmTime = document.getElementById("alarm").value || null;
       const currentAlarm = document.getElementById("current-alarm");
-      console.log("alarmTime ", alarmTime);
+      alarmTime = document.getElementById("alarm").value || null;
       socket.send(alarmTime);
       currentAlarm.innerHTML = alarmTime;
       alert(`Alarm set for ${alarmTime}`);
       toggleView(false);
+      checkAlarm();
+
       return alarmTime;
+    }
+
+    // check alarm time against current time
+    function checkAlarm() {
+      alert(`CHECK ALARM Alarm set for ${alarmTime}`);
+      const dtNow = new Date();
+      let dtAlarm = new Date();
+
+      dtAlarm.setHours(alarmTime.split(":")[0]);
+      dtAlarm.setMinutes(alarmTime.split(":")[1]);
+      dtAlarm.setSeconds(0);
+
+      if (dtAlarm - dtNow > 0) {
+        console.log('Later today, no changes needed!');
+      }
+      else {
+        console.log('Tomorrow, changing date to tomorrow');
+        dtAlarm.setDate(dtAlarm.getDate() + 1);
+      }
+
+      alert(`ALARM Alarm set for ${dtAlarm}`);
+
+      const diff = dtAlarm - new Date();
+      setTimeout(function(){ alert("Hello"); }, diff);
     }
 
     // clock
