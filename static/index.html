@@ -112,7 +112,7 @@
       console.log("alarmTime ", alarmTime);
       socket.send(alarmTime);
       currentAlarm.innerHTML = alarmTime;
-      alert(alarmTime);
+      alert(`Alarm set for ${alarmTime}`);
       toggleView(false);
       return alarmTime;
     }
@@ -120,12 +120,8 @@
     // clock
     function startTime() {
       const today = new Date();
-      let h = today.getHours();
-      let m = today.getMinutes();
-      let s = today.getSeconds();
-      m = checkTime(m);
-      s = checkTime(s);
-      document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+      const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+      document.getElementById('clock').innerHTML =  currentTime;
       setTimeout(startTime, 1000);
     }
 

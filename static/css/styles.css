@@ -6,7 +6,8 @@ body {
 body {
     height: 100vh;
     padding: 1em;
-    background: blanchedalmond;
+    background: #050401;
+    color: white;
     font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
@@ -38,9 +39,9 @@ body {
 #clock {
     align-items: center;
     box-sizing: border-box;
-    color: darkmagenta;
+    color: #FFFAFF;
     display: inline-flex;
-    font-size: 10rem;
+    font-size: 8rem;
     font-weight: 600;
     justify-content: center;
     line-height: 1.25;
@@ -58,12 +59,12 @@ body {
 .button-cta {
     align-items: center;
     background-clip: padding-box;
-    background-color: #fa6400;
+    background-color: #30BCED;
     border: 1px solid transparent;
     border-radius: .25rem;
     box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
     box-sizing: border-box;
-    color: #fff;
+    color: #303036;
     cursor: pointer;
     display: inline-flex;
     font-size: 16px;
@@ -100,11 +101,13 @@ body {
 }
 
 .button-set-alarm {
-    background-color: dodgerblue;
+    background-color: #FC5130;
+    color: white;
 }
 
 .button-test {
-    background-color: fuchsia;
+    background-color: #FFFAFF;
+    color: #303036;
 }
 
 /*SET ALARM*/
