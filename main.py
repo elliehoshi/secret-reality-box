@@ -127,7 +127,7 @@ class DataEndpoint(WebSocketEndpoint):
 
     async def on_receive(self, websocket: WebSocket, data: str, sound_alarm=False) -> None:
         logger.info("Socket: %s, Message: %s", websocket, data, sound_alarm)
-        if data is not None:
+        if data is not None and not sound_alarm:
             t2s = gTTS(data, lang ='en')
             t2s.save('speech.mp3')
             pygame.mixer.init()
@@ -135,6 +135,10 @@ class DataEndpoint(WebSocketEndpoint):
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy(): 
                 pygame.time.Clock().tick(10)
+        elif sound_alarm:
+            cuckoo_sound = "cat.wav"
+            pg.mixer.music.load(cuckoo_sound) #pygame - load the sound file
+            pg.mixer.music.play()       #pygame - play the sound file
 
 app = Starlette(
     routes=[

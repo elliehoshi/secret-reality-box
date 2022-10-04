@@ -31,7 +31,6 @@
     <div class="button-row">
       <button class="button-cta" role="button" onclick="btnCurrentTime()">Current Time</button>
       <button class="button-cta button-set-alarm" role="button" onclick="alarmBtnClick()">Set New Alarm</button>
-      <button class="button-cta button-test" role="button" onclick="btnTestAlarm()">!</button>
     </div>
     <div id="root"></div>
   </div>
@@ -91,18 +90,18 @@
       socket.send(currentTime);
     }
 
-    // test alarm
-    function btnTestAlarm() {
-      socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
-      // socket.send('Cuckoo! Cuckoo! Cuckoo!');
-    }
-
     // alarm
     function alarmBtnClick() {
       console.log('alarm button clicked');
       socket.send('Select alarm time');
 
       toggleView(true);
+    }
+
+    // sound the alarm!!!
+    function soundTheAlarm() {
+      alert("Alarm time!!!!!");
+      socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
     }
 
     // set alarm
@@ -120,7 +119,6 @@
 
     // check alarm time against current time
     function checkAlarm() {
-      alert(`CHECK ALARM Alarm set for ${alarmTime}`);
       const dtNow = new Date();
       let dtAlarm = new Date();
 
@@ -139,7 +137,7 @@
       alert(`ALARM Alarm set for ${dtAlarm}`);
 
       const diff = dtAlarm - new Date();
-      setTimeout(function(){ alert("Hello"); }, diff);
+      setTimeout(soundTheAlarm, diff);
     }
 
     // clock
@@ -148,11 +146,6 @@
       const currentTime = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
       document.getElementById('clock').innerHTML =  currentTime;
       setTimeout(startTime, 1000);
-    }
-
-    function checkTime(i) {
-      if (i < 10) {i = "0" + i}  // add zero in front of numbers < 10
-      return i;
     }
   </script>
 </body>
