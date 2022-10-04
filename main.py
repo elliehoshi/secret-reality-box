@@ -86,6 +86,7 @@ async def poll_camera():
 
 def speaker_out(text, string):
     if re.search(string, text, re.IGNORECASE):
+        pygame.mixer.init()
         pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
         pygame.mixer.music.play()       #pygame - play the sound file
 
