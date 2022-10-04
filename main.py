@@ -23,6 +23,7 @@ from uvicorn.config import LOGGING_CONFIG
 from google.cloud import vision
 import pygame 
 from gtts import gTTS
+import re   #regex lib for string searches
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
 
@@ -39,6 +40,9 @@ logger = logging.getLogger("main")
 websockets: List[WebSocket] = []
 camera = picamera.PiCamera()
 vision_client = vision.ImageAnnotatorClient()
+
+# cuckoo sound file
+cuckoo_sound = "cuckoo-clock-sound.mp3"
 
 async def broadcast(*args, **kwargs):
     value = args[0]
@@ -61,10 +65,29 @@ async def poll_camera():
             content = image_file.read()
             response = vision_client.label_detection(image=vision.Image(content=content))
             labels = response.label_annotations
+
+            label_text = ""
+
+            # parse labels, extract desc and stringify
             for label in labels:
-                await broadcast("Tags: {}".format(label.description))
+                label_text += ''.join([label.description, " "])
+
+            # send sound files, search strings, and label text to speaker_out()
+            if label_text:
+               print('image_labeling(): {}'.format(label_text))
+               speaker_out(label_text, "human")
+            else:
+                print('image_labeling(): No Label Descriptions')
+
+#             for label in labels:
+#                 await broadcast("Tags: {}".format(label.description))
 
         await asyncio.sleep(1)
+
+def speaker_out(text, string):
+    if re.search(string, text, re.IGNORECASE):
+        pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
+        pygame.mixer.music.play()       #pygame - play the sound file
 
 # nanoring NeoPixel code
 num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
@@ -113,11 +136,6 @@ class DataEndpoint(WebSocketEndpoint):
         logger.info("Socket: %s, Message: %s", websocket, data)
         if data is not None:
             if data == "cuckoo":
-                # play cuckoo sound
-                cuckoo_sound = "cuckoo-clock-sound.mp3"
-                pygame.mixer.music.load(cuckoo_sound) # load sound file
-                pygame.mixer.music.play()       # play sound file
-
                 # move cuckoo bird
                 print("Moving servo #1: motor_wait()")
                 crickit.servo_1.angle = 0      # right
@@ -125,6 +143,10 @@ class DataEndpoint(WebSocketEndpoint):
                 crickit.servo_1.angle = 90     # middle
                 await asyncio.sleep(1)
                 crickit.servo_1.angle = 180    # left
+
+                # play cuckoo sound
+                pygame.mixer.music.load(cuckoo_sound) # load sound file
+                pygame.mixer.music.play()       # play sound file
             else:
                 t2s = gTTS(data, lang ='en')
                 t2s.save('speech.mp3')
