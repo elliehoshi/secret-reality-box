@@ -66,21 +66,6 @@ async def poll_camera():
 
         await asyncio.sleep(1)
 
-# servo code
-async def motor_wait():
-    while True:
-        print("Moving servo #1: motor_wait()")
-        crickit.servo_1.angle = 0      # right
-        await asyncio.sleep(1)
-        crickit.servo_1.angle = 90     # middle
-        await asyncio.sleep(1)
-        crickit.servo_1.angle = 180    # left
-        await asyncio.sleep(1)
-        crickit.servo_1.angle = 90     # middle
-        await asyncio.sleep(1)
-        crickit.servo_1.angle = 0     # right
-# end servo code
-
 # nanoring NeoPixel code
 num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
 
@@ -128,9 +113,18 @@ class DataEndpoint(WebSocketEndpoint):
         logger.info("Socket: %s, Message: %s", websocket, data)
         if data is not None:
             if data == "cuckoo":
+                # play cuckoo sound
                 cuckoo_sound = "cuckoo-clock-sound.mp3"
-                pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
-                pygame.mixer.music.play()       #pygame - play the sound file
+                pygame.mixer.music.load(cuckoo_sound) # load sound file
+                pygame.mixer.music.play()       # play sound file
+
+                # move cuckoo bird
+                print("Moving servo #1: motor_wait()")
+                crickit.servo_1.angle = 0      # right
+                await asyncio.sleep(1)
+                crickit.servo_1.angle = 90     # middle
+                await asyncio.sleep(1)
+                crickit.servo_1.angle = 180    # left
             else:
                 t2s = gTTS(data, lang ='en')
                 t2s.save('speech.mp3')
@@ -160,7 +154,6 @@ async def event_loop():
     await asyncio.gather(
         asyncio.create_task(server.serve()),
         asyncio.create_task(poll_camera()),
-        asyncio.create_task(motor_wait()),
         asyncio.create_task(neopixel_rainbow())
     )
 
