@@ -128,7 +128,7 @@ class DataEndpoint(WebSocketEndpoint):
         logger.info("Socket: %s, Message: %s", websocket, data)
         if data is not None:
             if data == "cuckoo":
-                cuckoo_sound = "cat.wav"
+                cuckoo_sound = "cuckoo-clock-sound.mp3"
                 pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
                 pygame.mixer.music.play()       #pygame - play the sound file
             else:
