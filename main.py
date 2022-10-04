@@ -135,6 +135,7 @@ class DataEndpoint(WebSocketEndpoint):
     async def on_receive(self, websocket: WebSocket, data: str) -> None:
         logger.info("Socket: %s, Message: %s", websocket, data)
         if data is not None:
+            pygame.mixer.init()
             if data == "cuckoo":
                 # move cuckoo bird
                 print("Moving servo #1: motor_wait()")
@@ -150,7 +151,6 @@ class DataEndpoint(WebSocketEndpoint):
             else:
                 t2s = gTTS(data, lang ='en')
                 t2s.save('speech.mp3')
-                pygame.mixer.init()
                 pygame.mixer.music.load('speech.mp3')
                 pygame.mixer.music.play()
                 while pygame.mixer.music.get_busy():
