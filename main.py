@@ -131,7 +131,7 @@ class DataEndpoint(WebSocketEndpoint):
                 cuckoo_sound = "cat.wav"
                 pg.mixer.music.load(cuckoo_sound) #pygame - load the sound file
                 pg.mixer.music.play()       #pygame - play the sound file
-            else
+            else:
                 t2s = gTTS(data, lang ='en')
                 t2s.save('speech.mp3')
                 pygame.mixer.init()
