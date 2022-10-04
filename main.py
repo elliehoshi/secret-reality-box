@@ -81,7 +81,6 @@ async def motor_wait():
         crickit.servo_1.angle = 0     # right
 # end servo code
 
-
 # nanoring NeoPixel code
 num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
 
@@ -90,7 +89,7 @@ pixels = NeoPixel(crickit.seesaw, 20, num_pixels)
 
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
-    # The colours are a transition r - g - b - back to r.
+    # The colors are a transition r - g - b - back to r.
     if pos < 0 or pos > 255:
         return (0, 0, 0)
     if pos < 85:
@@ -125,20 +124,21 @@ class DataEndpoint(WebSocketEndpoint):
         )
         await websocket.close()
 
-    async def on_receive(self, websocket: WebSocket, data: str, sound_alarm=False) -> None:
-        logger.info("Socket: %s, Message: %s", websocket, data, sound_alarm)
-        if data is not None and not sound_alarm:
-            t2s = gTTS(data, lang ='en')
-            t2s.save('speech.mp3')
-            pygame.mixer.init()
-            pygame.mixer.music.load('speech.mp3')
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy(): 
-                pygame.time.Clock().tick(10)
-        elif sound_alarm:
-            cuckoo_sound = "cat.wav"
-            pg.mixer.music.load(cuckoo_sound) #pygame - load the sound file
-            pg.mixer.music.play()       #pygame - play the sound file
+    async def on_receive(self, websocket: WebSocket, data: str) -> None:
+        logger.info("Socket: %s, Message: %s", websocket, data)
+        if data is not None:
+            if data == "cuckoo":
+                cuckoo_sound = "cat.wav"
+                pg.mixer.music.load(cuckoo_sound) #pygame - load the sound file
+                pg.mixer.music.play()       #pygame - play the sound file
+            else
+                t2s = gTTS(data, lang ='en')
+                t2s.save('speech.mp3')
+                pygame.mixer.init()
+                pygame.mixer.music.load('speech.mp3')
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy():
+                    pygame.time.Clock().tick(10)
 
 app = Starlette(
     routes=[
