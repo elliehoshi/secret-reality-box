@@ -86,21 +86,24 @@ async def poll_camera():
 
 def speaker_out(text, string):
     if re.search(string, text, re.IGNORECASE):
-#         pygame.mixer.init()
-#         pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
-#         pygame.mixer.music.play()       #pygame - play the sound file
+        pygame.mixer.init()
+        pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
+        pygame.mixer.music.play()       #pygame - play the sound file
 
-        # move cuckoo bird
+# servo code
+async def motor_wait():
+     while True:
         print("Moving servo #1: motor_wait()")
         crickit.servo_1.angle = 0      # right
-        await asyncio.sleep(.1)
+        await asyncio.sleep(1)
         crickit.servo_1.angle = 90     # middle
-        await asyncio.sleep(.1)
+        await asyncio.sleep(1)
         crickit.servo_1.angle = 180    # left
-        await asyncio.sleep(.1)
+        await asyncio.sleep(1)
         crickit.servo_1.angle = 90     # middle
-        await asyncio.sleep(.1)
-        crickit.servo_1.angle = 0      # right
+        await asyncio.sleep(1)
+        crickit.servo_1.angle = 0     # right
+# end servo code
 
 # nanoring NeoPixel code
 num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
@@ -193,6 +196,7 @@ async def event_loop():
     await asyncio.gather(
         asyncio.create_task(server.serve()),
         asyncio.create_task(poll_camera()),
+        asyncio.create_task(motor_wait()),
         asyncio.create_task(neopixel_rainbow())
     )
 
