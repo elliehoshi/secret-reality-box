@@ -196,7 +196,6 @@ async def event_loop():
     await asyncio.gather(
         asyncio.create_task(server.serve()),
         asyncio.create_task(poll_camera()),
-        asyncio.create_task(motor_wait()),
         asyncio.create_task(neopixel_rainbow())
     )
 
