@@ -86,9 +86,21 @@ async def poll_camera():
 
 def speaker_out(text, string):
     if re.search(string, text, re.IGNORECASE):
-        pygame.mixer.init()
-        pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
-        pygame.mixer.music.play()       #pygame - play the sound file
+#         pygame.mixer.init()
+#         pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
+#         pygame.mixer.music.play()       #pygame - play the sound file
+
+        # move cuckoo bird
+        print("Moving servo #1: motor_wait()")
+        crickit.servo_1.angle = 0      # right
+        await asyncio.sleep(.1)
+        crickit.servo_1.angle = 90     # middle
+        await asyncio.sleep(.1)
+        crickit.servo_1.angle = 180    # left
+        await asyncio.sleep(.1)
+        crickit.servo_1.angle = 90     # middle
+        await asyncio.sleep(.1)
+        crickit.servo_1.angle = 0      # right
 
 # nanoring NeoPixel code
 num_pixels = 30  # Number of pixels driven from Crickit NeoPixel terminal
@@ -141,10 +153,14 @@ class DataEndpoint(WebSocketEndpoint):
                 # move cuckoo bird
                 print("Moving servo #1: motor_wait()")
                 crickit.servo_1.angle = 0      # right
-                await asyncio.sleep(1)
+                await asyncio.sleep(.1)
                 crickit.servo_1.angle = 90     # middle
-                await asyncio.sleep(1)
+                await asyncio.sleep(.1)
                 crickit.servo_1.angle = 180    # left
+                await asyncio.sleep(.1)
+                crickit.servo_1.angle = 90     # middle
+                await asyncio.sleep(.1)
+                crickit.servo_1.angle = 0      # right
 
                 # play cuckoo sound
                 pygame.mixer.music.load(cuckoo_sound) # load sound file

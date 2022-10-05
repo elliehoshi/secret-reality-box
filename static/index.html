@@ -103,7 +103,6 @@
 
     // sound the alarm!!!
     function soundTheAlarm() {
-      alert("Alarm time!!!!!");
       // socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
       socket.send('cuckoo');
     }
@@ -138,7 +137,7 @@
         dtAlarm.setDate(dtAlarm.getDate() + 1);
       }
 
-      alert(`ALARM Alarm set for ${dtAlarm}`);
+      // alert(`ALARM Alarm set for ${dtAlarm}`);
 
       const diff = dtAlarm - new Date();
       setTimeout(soundTheAlarm, diff);
