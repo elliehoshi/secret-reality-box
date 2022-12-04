@@ -36,6 +36,12 @@ body {
     pointer-events: auto;
 }
 
+/* TEXT STYLES */
+h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+}
+
 /* SCANNING ANIMATION */
 .scanning-animation {
     height: 40vh;
