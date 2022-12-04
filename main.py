@@ -75,7 +75,6 @@ async def poll_camera():
             # send sound files, search strings, and label text to speaker_out()
             if label_text:
                print('image_labeling(): {}'.format(label_text))
-               speaker_out(label_text, "human")
             else:
                 print('image_labeling(): No Label Descriptions')
 
@@ -83,12 +82,6 @@ async def poll_camera():
 #                 await broadcast("Tags: {}".format(label.description))
 
         await asyncio.sleep(1)
-
-def speaker_out(text, string):
-    if re.search(string, text, re.IGNORECASE):
-        pygame.mixer.init()
-        pygame.mixer.music.load(cuckoo_sound) #pygame - load the sound file
-        pygame.mixer.music.play()       #pygame - play the sound file
 
 # servo code
 async def motor_wait():

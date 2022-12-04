@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Cuckoo</title>
+  <title>Secret Reality</title>
   <style>
     @font-face { font-family: edmunds; src: url('fonts/edmunds.otf'); }
   </style>
@@ -15,6 +15,7 @@
   <div class="container">
     <div id="default-wrapper" class="wrapper show">
       <h1>Scan your secret</h1>
+      <img src="scanning-gif.gif" />
     </div>
 
     <div id="scan-successful-wrapper" class="wrapper">
@@ -54,7 +55,6 @@
     const socket = new WebSocket('ws://localhost:21489/ws');
 
     const root = document.getElementById('root');
-    let alarmTime = null;
 
     socket.onopen = () => {
       console.log('[open] Connection established');
@@ -79,17 +79,14 @@
       console.error(`[error] ${event.toString()}`);
     };
 
-    // hide/display clock/alarm
+    // hide/display GUI states
+    // TODO: Refactor to DRY up the toggle logic
     function toggleView(showStatus) {
-      console.log('clicked toggleView ', showStatus);
       const scanSuccessWrapper = document.getElementById("scan-successful-wrapper");
       const defaultWrapper = document.getElementById("default-wrapper");
       const scanFailedWrapper = document.getElementById("scan-failed-wrapper");
       const checkmark = document.getElementsByClassName("checkmark")[0];
       const uiError = document.getElementsByClassName("ui-error")[0];
-      let alarmVisible = scanSuccessWrapper.classList.contains("show");
-      let clockVisible = defaultWrapper.classList.contains("show");
-      let scanFailedVisible = scanFailedWrapper.classList.contains("show");
 
       if ( !showStatus ) {
         scanSuccessWrapper.classList.remove("show");
@@ -111,7 +108,7 @@
         checkmark.classList.add("hide");
         uiError.classList.add("show");
       } else {
-        console.log('alarmVisible: ', alarmVisible, 'clockVisible: ', clockVisible, showStatus);
+        console.log('toggleView ', showStatus);
       }
     }
 
@@ -119,37 +116,6 @@
     function soundTheAlarm() {
       // socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
       socket.send('cuckoo');
-    }
-
-    // set alarm
-    function setAlarm() {
-      alarmTime = document.getElementById("alarm").value || null;
-      socket.send(alarmTime);
-      toggleView(false);
-      checkAlarm();
-
-      return alarmTime;
-    }
-
-    // check alarm time against current time
-    function checkAlarm() {
-      const dtNow = new Date();
-      let dtAlarm = new Date();
-
-      dtAlarm.setHours(alarmTime.split(":")[0]);
-      dtAlarm.setMinutes(alarmTime.split(":")[1]);
-      dtAlarm.setSeconds(0);
-
-      if (dtAlarm - dtNow > 0) {
-        console.log('Later today, no changes needed!');
-      }
-      else {
-        console.log('Tomorrow, changing date to tomorrow');
-        dtAlarm.setDate(dtAlarm.getDate() + 1);
-      }
-
-      const diff = dtAlarm - new Date();
-      setTimeout(soundTheAlarm, diff);
     }
   </script>
 </body>
