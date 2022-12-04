@@ -9,6 +9,8 @@
   </style>
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+  <script type="module" src="js/animate.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
@@ -19,10 +21,11 @@
 
     <div id="scanning-wrapper" class="wrapper">
       <img class="scanning-animation" src="scanning-gif.gif" />
+      <h2>Scanning...</h2>
     </div>
 
     <div id="scan-successful-wrapper" class="wrapper">
-      <h1>Scan successful</h1>
+      <h2>Scan successful</h2>
       <div class="success-animation">
         <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
       </div>

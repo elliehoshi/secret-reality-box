@@ -1,5 +1,3 @@
-console.log('HELLO');
-
 const socket = new WebSocket('ws://localhost:21489/ws');
 
 const root = document.getElementById('root');
