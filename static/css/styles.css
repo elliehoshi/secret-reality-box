@@ -35,6 +35,11 @@ body {
     pointer-events: auto;
 }
 
+/* SCANNING ANIMATION */
+.scanning-animation {
+    height: 80vh;
+}
+
 /*CLOCK*/
 #clock {
     align-items: center;

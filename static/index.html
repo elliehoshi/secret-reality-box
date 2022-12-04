@@ -14,8 +14,11 @@
 <body>
   <div class="container">
     <div id="default-wrapper" class="wrapper show">
-      <h1>Scan your secret</h1>
-      <img src="scanning-gif.gif" />
+      <h1>Share here</h1>
+    </div>
+
+    <div id="scanning-wrapper" class="wrapper">
+      <img class="scanning-animation" src="scanning-gif.gif" />
     </div>
 
     <div id="scan-successful-wrapper" class="wrapper">
@@ -45,6 +48,7 @@
     <div class="button-row">
       <h4>Press a button to test different GUI states:</h4>
       <button class="button-cta button-test" role="button" onclick="toggleView()">Default</button>
+      <button class="button-cta button-set-alarm" role="button" onclick="toggleView('scanning')">Scanning</button>
       <button class="button-cta" role="button" onclick="toggleView('success')">Success</button>
       <button class="button-cta button-set-alarm" role="button" onclick="toggleView('fail')">Failure</button>
     </div>
@@ -84,6 +88,7 @@
     function toggleView(showStatus) {
       const scanSuccessWrapper = document.getElementById("scan-successful-wrapper");
       const defaultWrapper = document.getElementById("default-wrapper");
+      const scanningWrapper = document.getElementById("scanning-wrapper");
       const scanFailedWrapper = document.getElementById("scan-failed-wrapper");
       const checkmark = document.getElementsByClassName("checkmark")[0];
       const uiError = document.getElementsByClassName("ui-error")[0];
@@ -94,28 +99,35 @@
         defaultWrapper.classList.add("show");
         checkmark.classList.add("hide");
         uiError.classList.remove("show");
+        scanningWrapper.classList.remove("show");
       } else if ( showStatus == "success" ) {
         defaultWrapper.classList.remove("show");
         scanFailedWrapper.classList.remove("show");
         scanSuccessWrapper.classList.add("show");
+        scanningWrapper.classList.remove("show");
         checkmark.classList.remove("hide");
         checkmark.classList.add("show");
         uiError.classList.remove("show");
+      } else if ( showStatus == "scanning" ) {
+        defaultWrapper.classList.remove("show");
+        scanFailedWrapper.classList.remove("show");
+        scanSuccessWrapper.classList.remove("show");
+        scanningWrapper.classList.add("show");
       } else if ( showStatus == "fail" ) {
         defaultWrapper.classList.remove("show");
         scanSuccessWrapper.classList.remove("show");
         scanFailedWrapper.classList.add("show");
         checkmark.classList.add("hide");
         uiError.classList.add("show");
+        scanningWrapper.classList.remove("show");
       } else {
         console.log('toggleView ', showStatus);
       }
     }
 
     // sound the alarm!!!
-    function soundTheAlarm() {
-      // socket.send('Cuckoo! Cuckoo! Cuckoo!', true);
-      socket.send('cuckoo');
-    }
+    // function soundTheAlarm() {
+    //   socket.send('cuckoo');
+    // }
   </script>
 </body>
