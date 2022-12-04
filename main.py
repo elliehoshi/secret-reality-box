@@ -14,7 +14,7 @@ import subprocess
 
 
 #set up your GCP credentials - replace the " " in the following line with your .json file and path
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="Zack-Cloud.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
 
 # this line connects to Google Cloud Vision! 
 client = vision.ImageAnnotatorClient()
