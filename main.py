@@ -1,3 +1,10 @@
+from asyncio.exceptions import CancelledError
+from asyncio.tasks import ALL_COMPLETED
+import logging
+import asyncio
+import os
+from typing import List
+
 import picamera     #camera library
 import pygame as pg #audio library
 import os           #communicate with os/command line
@@ -11,6 +18,19 @@ import signal
 import sys
 import re           #regular expression lib for string searches!
 import subprocess
+
+from starlette.websockets import WebSocket
+from uvicorn import Config, Server
+from starlette.applications import Starlette
+from starlette.endpoints import WebSocketEndpoint
+from starlette.middleware import Middleware
+from starlette.middleware.gzip import GZipMiddleware
+from starlette.routing import Mount, WebSocketRoute
+from starlette.staticfiles import StaticFiles
+from uvicorn.config import LOGGING_CONFIG
+from google.cloud import vision
+from gtts import gTTS
+import re   #regex lib for string searches
 
 
 #set up your GCP credentials - replace the " " in the following line with your .json file and path
