@@ -47,6 +47,11 @@ h1 {
     height: 40vh;
 }
 
+/* QR CODE */
+.qr-code {
+    height: 40vh;
+}
+
 /*BUTTON*/
 .button-cta {
     align-items: center;
@@ -78,7 +83,7 @@ h1 {
 
 .button-cta:hover,
 .button-cta:focus {
-    background-color: #fb8332;
+    background-color: darkred;
     box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
 }
 
@@ -87,19 +92,9 @@ h1 {
 }
 
 .button-cta:active {
-    background-color: #c85000;
+    background-color: darkred;
     box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
     transform: translateY(0);
-}
-
-.button-set-alarm {
-    background-color: darkred;
-    color: white;
-}
-
-.button-test {
-    background-color: #FFFAFF;
-    color: #303036;
 }
 
 /* success svg animation */

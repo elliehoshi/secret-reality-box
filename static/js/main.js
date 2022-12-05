@@ -34,7 +34,7 @@ function toggleView(showStatus) {
     setTimeout(() => {
       communityWrapper.classList.remove("show");
       defaultWrapper.classList.add("show");
-    }, 25000)
+    }, 28000)
   } else {
     console.log('toggleView ', showStatus);
   }
