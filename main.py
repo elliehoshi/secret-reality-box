@@ -3,7 +3,6 @@ from asyncio.exceptions import CancelledError
 from asyncio.tasks import ALL_COMPLETED
 import logging
 import asyncio
-import os
 from typing import List
 
 import picamera     #camera library
@@ -14,9 +13,11 @@ import numpy as np
 from google.cloud import vision  #gcp vision library
 from time import sleep
 from adafruit_crickit import crickit
+from adafruit_seesaw.neopixel import NeoPixel
 import time
 import signal
 import sys
+import re           #regular expression lib for string searches!
 import subprocess
 
 # debug websockets
@@ -31,11 +32,11 @@ from starlette.staticfiles import StaticFiles
 from uvicorn.config import LOGGING_CONFIG
 from google.cloud import vision
 from gtts import gTTS
-import re   #regex lib for string searches
 
 
 #set up your GCP credentials - replace the " " in the following line with your .json file and path
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/home/pi/TDF - Scripts/TDF_VoiceVision.json"
 
 # ELLIE DEBUG TEST
 LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
@@ -60,6 +61,9 @@ async def broadcast(*args, **kwargs):
             return_when=ALL_COMPLETED,
         )
 # END ELLIE DEBUG TEST
+
+num_pixels = 24  # Number of pixels driven from Crickit NeoPixel terminal
+pixels = NeoPixel(crickit.seesaw, 20, num_pixels)
 
 # this line connects to Google Cloud Vision! 
 client = vision.ImageAnnotatorClient()
