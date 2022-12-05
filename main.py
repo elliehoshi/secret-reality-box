@@ -1,3 +1,4 @@
+# debug websockets
 from asyncio.exceptions import CancelledError
 from asyncio.tasks import ALL_COMPLETED
 import logging
@@ -16,9 +17,9 @@ from adafruit_crickit import crickit
 import time
 import signal
 import sys
-import re           #regular expression lib for string searches!
 import subprocess
 
+# debug websockets
 from starlette.websockets import WebSocket
 from uvicorn import Config, Server
 from starlette.applications import Starlette
@@ -35,6 +36,30 @@ import re   #regex lib for string searches
 
 #set up your GCP credentials - replace the " " in the following line with your .json file and path
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="vision-voice-key.json"
+
+# ELLIE DEBUG TEST
+LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+LOGGING_CONFIG["formatters"]["default"]["fmt"] = LOG_FORMAT
+LOGGING_CONFIG["formatters"]["access"][
+    "fmt"
+] = "%(asctime)s | %(levelname)s | %(name)s | %(client_addr)s | %(request_line)s | %(status_code)s"
+LOGGING_CONFIG["loggers"]["uvicorn.error"]["handlers"] = ["default"]
+LOGGING_CONFIG["loggers"]["uvicorn.error"]["propagate"] = False
+logger = logging.getLogger("main")
+
+websockets: List[WebSocket] = []
+
+async def broadcast(*args, **kwargs):
+    value = args[0]
+    if len(websockets) > 0:
+        logger.info("Sending: " + value)
+        await asyncio.wait(
+            [asyncio.create_task(ws.send_text(value)) for ws in websockets],
+            timeout=3,
+            return_when=ALL_COMPLETED,
+        )
+# END ELLIE DEBUG TEST
 
 # this line connects to Google Cloud Vision! 
 client = vision.ImageAnnotatorClient()
@@ -82,6 +107,48 @@ def ocr_handwriting(image):
         return word_text
     else:
         return 0
+
+# ELLIE DEBUG TEST
+class DataEndpoint(WebSocketEndpoint):
+    async def on_connect(self, websocket: WebSocket) -> None:
+        await websocket.accept()
+        websockets.append(websocket)
+        logger.info("Connected to %s", websocket)
+
+    async def on_disconnect(self, websocket: WebSocket, close_code: int) -> None:
+        websockets.remove(websocket)
+        logger.warning(
+            "Disconnected from websocket %s with code %s", websocket, close_code
+        )
+        await websocket.close()
+
+    async def on_receive(self, websocket: WebSocket, data: str) -> None:
+        logger.info("Socket: %s, Message: %s", websocket, data)
+        if data is not None:
+            t2s = gTTS(data, lang ='en')
+            t2s.save('speech.mp3')
+            pygame.mixer.init()
+            pygame.mixer.music.load('speech.mp3')
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy(): 
+                pygame.time.Clock().tick(10)
+
+app = Starlette(
+    routes=[
+        WebSocketRoute("/ws", endpoint=DataEndpoint),
+        Mount("/", app=StaticFiles(directory="static", html=True), name="static"),
+    ],
+    middleware=[Middleware(GZipMiddleware, minimum_size=1000)],
+)
+
+server = Server(
+    config=Config(
+        host="localhost",
+        port=21489,
+        app=app,
+    )
+)
+# END ELLIE DEBUG TEST
 
 
 def main():
