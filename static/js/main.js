@@ -1,31 +1,3 @@
-const socket = new WebSocket('ws://localhost:21489/ws');
-
-const root = document.getElementById('root');
-
-socket.onopen = () => {
-  console.log('[open] Connection established');
-  console.log('Sending to server');
-};
-
-socket.onmessage = (event) => {
-  root.innerText = event.data;
-};
-
-socket.onclose = function (event) {
-  if (event.wasClean) {
-    console.log(
-      `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
-    );
-  } else {
-    console.log('[close] Connection died');
-  }
-};
-
-socket.onerror = function (event) {
-  console.error(`[error] ${event.toString()}`);
-};
-
-
 // sound the alarm!!!
 // function soundTheAlarm() {
 //   socket.send('cuckoo');
