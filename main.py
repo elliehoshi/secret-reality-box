@@ -20,6 +20,8 @@ import sys
 import re           #regular expression lib for string searches!
 import subprocess
 
+import csv
+
 # debug websockets
 from starlette.websockets import WebSocket
 from uvicorn import Config, Server
@@ -74,10 +76,10 @@ image = 'image.jpg'
 def takephoto(camera):
     
     # this triggers an on-screen preview, so you know what you're photographing!
-    camera.start_preview() 
+    # camera.start_preview() 
     sleep(.5)                   #give it a pause so you can adjust if needed
     camera.capture('image.jpg') #save the image
-    camera.stop_preview()       #stop the preview
+    # camera.stop_preview()       #stop the preview
 
 def ocr_handwriting(image):
     #this function sends your image to google cloud using the
@@ -196,6 +198,14 @@ def main():
                 ind = np.argmax(counts)
                 most_likely_candidate = values[ind]
                 print('Most likely handwriting(): {}'.format(most_likely_candidate))
+
+                # open the file in the write mode
+                with open('secret_data.csv', 'w') as f:
+                    # create the csv writer
+                    writer = csv.writer(f)
+
+                    # write a row to the csv file
+                    writer.writerow(most_likely_candidate)
                 
             time.sleep(sleep_time)        
         
